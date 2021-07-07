@@ -67,8 +67,10 @@ def translate_video(video, converter):
             obj['summary.value'] = translated_summary
             obj['summary.locked'] = 1
             print(
-                '\tsummary: [{0}] -> [{1}]'.format(summary,
-                                                   translated_summary)
+                '\tsummary: [{0}]\n\t-> [{1}]'.format(
+                    summary,
+                    translated_summary
+                )
             )
     if obj:
         video.edit(**obj)
