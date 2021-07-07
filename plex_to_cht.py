@@ -25,31 +25,43 @@ def is_containing_chinese(texts):
 def translate_video(video, converter):
     print('\nProcessing [{0}]'.format(video.title))
     title = video.title
+    is_title_locked = False
     title_sort = video.titleSort
+    is_title_sort_locked = False
     summary = video.summary
+    is_summary_locked = False
     obj = {}
 
+    # check whether the field are locked
+    for field in video.fields:
+        if field.name == 'title' and field.locked:
+            is_title_locked = True
+        elif field.name == 'titleSort' and field.locked:
+            is_title_sort_locked = True
+        elif field.name == 'summary' and field.locked:
+            is_summary_locked = True
+
     # title
-    if (is_containing_chinese(title)):
+    if not is_title_locked and is_containing_chinese(title):
         translated_title = converter.convert(title)
         if title != translated_title:
             obj['title.value'] = translated_title
             obj['title.locked'] = 1
-            print('\ttitle: [{0}] -> [{1}]'.format(title, translated_title))
+            print('\ttitle: [{0}]\n\t-> [{1}]'.format(title, translated_title))
     # titleSort
-    if (is_containing_chinese(title_sort)):
+    if not is_title_sort_locked and is_containing_chinese(title_sort):
         translated_title_sort = converter.convert(title_sort)
         if title_sort != translated_title_sort:
             obj['titleSort.value'] = translated_title_sort
             obj['titleSort.locked'] = 1
             print(
-                '\ttitleSort: [{0}] -> [{1}]'.format(
+                '\ttitleSort: [{0}]\n\t-> [{1}]'.format(
                     title_sort,
                     translated_title_sort
                 )
             )
     # summary
-    if (is_containing_chinese(summary)):
+    if not is_summary_locked and is_containing_chinese(summary):
         translated_summary = converter.convert(summary)
         if summary != translated_summary:
             obj['summary.value'] = translated_summary
