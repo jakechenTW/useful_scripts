@@ -86,14 +86,15 @@ def translate_movie(section_name, plex, converter):
 
 
 def translate_tv_show(section_name, plex, converter):
+    # translate the show itself
     shows = plex.library.section(section_name).search()
     for show in shows:
-        # translate the show itself
         translate_video(show, converter)
+
         # translate all the episodes belong to the show
-        episodes = plex.library.section(section_name).get(
-            converter.convert(show.title)
-        ).episodes()
+    shows = plex.library.section(section_name).search()
+    for show in shows:
+        episodes = plex.library.section(section_name).get(show.title).episodes()
         for episode in episodes:
             translate_video(episode, converter)
 
