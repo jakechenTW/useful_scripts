@@ -12,18 +12,18 @@ fi
 
 pushd "$1"
 
-for text_file in * ; do \
+for text_file in *; do
     mime_encoding="$(file -b --mime-encoding "${text_file}")"
     if [[ "${mime_encoding}" != utf-8 ]]; then
         echo "the encoding of "${text_file}" is "${mime_encoding}""
         tmp="iconv-utf8-${text_file}"
-        iconv -f "${mime_encoding}" -t UTF-8 "${text_file}" > "${tmp}"
+        iconv -f "${mime_encoding}" -t UTF-8 "${text_file}" >"${tmp}"
         echo "$(cat "${tmp}")"
         read -p "[iconv] Are the contents as expected?" yn
         case $yn in
-            [Yy]* ) mv "${tmp}" "${text_file}";;
-            [Nn]* ) rm "${tmp}";;
-            * ) echo "Please answer yes or no.";;
+        [Yy]*) mv "${tmp}" "${text_file}" ;;
+        [Nn]*) rm "${tmp}" ;;
+        *) echo "Please answer yes or no." ;;
         esac
     fi
     tmp="opencc-convert-${text_file}"
@@ -31,11 +31,10 @@ for text_file in * ; do \
     echo "$(cat "${tmp}")"
     read -p "[opencc] Are the contents as expected?" yn
     case $yn in
-        [Yy]* ) mv "${tmp}" "${text_file}";;
-        [Nn]* ) rm "${tmp}";;
-        * ) echo "Please answer yes or no";;
+    [Yy]*) mv "${tmp}" "${text_file}" ;;
+    [Nn]*) rm "${tmp}" ;;
+    *) echo "Please answer yes or no" ;;
     esac
-done;
+done
 
 popd
-
